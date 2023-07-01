@@ -107,6 +107,37 @@ app.post("/participants", async (req, res) => {
 	}
   }) 
 
+  // GET messages
+  app.get('/messages', async (req, res) => {
+	try {
+	  const user = req.headers['user']
+	  const limit = req.query
+	  const numLimit = Number(limit)
+  
+	  if (limit !== undefined && (numLimit <= 0 || isNaN(numLimit))) 
+	  return res.sendStatus(422)
+	  
+  
+	  const messages = await db.collection('messages')
+		.find({
+		  $or: [
+			{ to: user },
+			{ from: user },
+			{ to: 'Todos' },
+			{ type: 'message' }
+		  ]
+		})
+		.sort(({ $natural: -1 }))
+		.limit(limit === undefined ? 0 : numLimit)
+		.toArray()
+  
+	  return res.json(messages)
+	} catch (error) {
+	  console.log(error)
+	  return res.status(500).send(err.message)
+	}
+  })
+
 //inicia o servidor 
 app.listen(5000, () => {
 	console.log('Servidor iniciado na porta 5000')
