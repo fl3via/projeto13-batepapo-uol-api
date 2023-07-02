@@ -89,12 +89,12 @@ app.post("/participants", async (req, res) => {
 	  }
   
 	  const existingParticipant = await db.collection('participants').findOne({ name: from })
-	  if (!existingParticipant) {
+	  if (!existingParticipant) 
 		return res.sendStatus(422)
-	  }
+	  
   
 	  const message = {
-		from,
+		from: from,
 		to,
 		text,
 		type,
@@ -105,7 +105,7 @@ app.post("/participants", async (req, res) => {
   
 	  return res.sendStatus(201)
 	} catch (err) {
-	  return res.status(500).send(err.message)
+	 res.status(500).send(err.message)
 	}
   }) 
 
