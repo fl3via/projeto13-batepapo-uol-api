@@ -138,7 +138,50 @@ app.post("/participants", async (req, res) => {
 	}
   })
 
+  // STATUS
+  app.post('/status', async (req, res) => {
+	const { name } = req.headers 
+
+	if (!user) return res.sendStatus(400) 
+
+	try {
+		const result = await db.collection('participants').updateOne(
+			{name: user}, {$set: { lastStatus: Date.now()}}
+		)
+
+		if (res.matchedCount === 0 ) return res.sendStatus(404)
+		res.sendStatus(200)
+	}
+	catch (err) {
+		res.status(500).send(err.massage)
+	}
+  })
+
+  // Função para remover participantes inativos e salvar mensagens
+const removeInactiveParticipants = async () => {
+	const threshold = Date.now() - 10000
+	const inactiveParticipants = await db.collection('participants')
+	  .find({ lastStatus: { $lt: threshold } })
+	  .toArray()
   
+	if (inactiveParticipants.length > 0) {
+	  await db.collection('participants').deleteMany({ lastStatus: { $lt: threshold } })
+  
+	  const removalMessages = inactiveParticipants.map(participant => ({
+		from: participant.name,
+		to: 'Todos',
+		text: 'saiu da sala...',
+		type: 'status',
+		time: dayjs().format('HH:mm:ss')
+	  }))
+  
+	  await db.collection('messages').insertMany(removalMessages)
+	}
+  }
+  
+  //remoção a cada 15 segundos
+  setInterval(removeInactiveParticipants, 15000)
+
 //inicia o servidor 
 app.listen(5000, () => {
 	console.log('Servidor iniciado na porta 5000')
