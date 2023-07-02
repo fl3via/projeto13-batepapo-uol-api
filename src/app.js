@@ -173,7 +173,7 @@ const removeInactiveParticipants = async () => {
 	  const removalMessages = inactiveParticipants.map(participant => ({
 		from: participant.name,
 		to: 'Todos',
-		text: 'saiu da sala...',
+		text: 'sai da sala...',
 		type: 'status',
 		time: dayjs().format('HH:mm:ss')
 	  }))
