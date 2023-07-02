@@ -125,7 +125,7 @@ app.post("/participants", async (req, res) => {
 		  $or: [
 			{ to: user },
 			{ from: user },
-			{ to: 'Todos' },
+			{ to: {$in: ['Todos', user]} },
 			{ type: 'message' }
 		  ]
 		})
