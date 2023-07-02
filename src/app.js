@@ -70,7 +70,7 @@ app.post("/participants", async (req, res) => {
 	try {
 	  const participants = await db.collection('participants').find({}, { _id: 0, name: 1 }).toArray();
 	  return res.json(participants);
-	} catch (error) {
+	} catch (err) {
 	  return res.status(500).send();
 	}
   })
@@ -134,8 +134,7 @@ app.post("/participants", async (req, res) => {
 		.toArray()
   
 	  return res.json(messages)
-	} catch (error) {
-	  console.log(error)
+	} catch (err) {
 	  return res.status(500).send(err.message)
 	}
   })
