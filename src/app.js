@@ -114,7 +114,7 @@ app.post("/participants", async (req, res) => {
   app.get('/messages', async (req, res) => {
 	try {
 	  const user = req.headers['user']
-	  const limit = req.query
+	  const {limit}= req.query
 	  const numLimit = Number(limit)
   
 	  if (limit !== undefined && (numLimit <= 0 || isNaN(numLimit))) 
