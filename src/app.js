@@ -68,11 +68,13 @@ app.post("/participants", async (req, res) => {
   
   app.get('/participants', async (req, res) => {
 	try {
-	  const participants = await participants.find({}, { _id: 0, name: 1 }).toArray()
+	  const participants = await db.collection('participants').find({}, { _id: 0, name: 1 }).toArray();
+	  return res.json(participants);
 	} catch (error) {
-	  return res.status(500).send()
+	  return res.status(500).send();
 	}
   })
+  
 
   // Rota POST /messages
   app.post('/messages', async (req, res) => {
@@ -140,16 +142,17 @@ app.post("/participants", async (req, res) => {
 
   // STATUS
   app.post('/status', async (req, res) => {
-	const { name } = req.headers 
+	const { user } = req.headers 
 
 	if (!user) return res.sendStatus(400) 
 
 	try {
 		const result = await db.collection('participants').updateOne(
-			{name: user}, {$set: { lastStatus: Date.now()}}
+			{name: user}, {$set: { lastStatus: Date.now() }}
 		)
 
-		if (res.matchedCount === 0 ) return res.sendStatus(404)
+		if (result.matchedCount === 0 ) return res.sendStatus(404)
+		await removeInactiveParticipants()
 		res.sendStatus(200)
 	}
 	catch (err) {
