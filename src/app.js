@@ -81,13 +81,14 @@ app.post("/participants", async (req, res) => {
 	const { to, text, type } = req.body
 	const from = req.headers['user']
   
-	try {
-	  const { error } = mensagem.validate({ to, text, type })
+	
+	  const { error } = mensagem.validate({ ...req.body, from: from }, {abortEarly: false})
 	  if (error) {
 		const errorMessages = error.details.map((detail) => detail.message)
 		return res.status(422).send(errorMessages)
 	  }
-  
+
+	  try {
 	  const existingParticipant = await db.collection('participants').findOne({ name: from })
 	  if (!existingParticipant) 
 		return res.sendStatus(422)
