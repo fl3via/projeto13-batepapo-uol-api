@@ -138,6 +138,7 @@ app.post("/participants", async (req, res) => {
 	}
   })
 
+  
 //inicia o servidor 
 app.listen(5000, () => {
 	console.log('Servidor iniciado na porta 5000')
