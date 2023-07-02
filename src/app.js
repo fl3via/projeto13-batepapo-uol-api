@@ -25,7 +25,7 @@ const db = mongoClient.db()
 
 // joi
 const participantes = joi.object({ name: joi.string().required() })
-const message = joi.object({
+const mensagem = joi.object({
 	from: joi.string().required(),
 	to: joi.string().required(),
 	text: joi.string().required(),
@@ -82,7 +82,7 @@ app.post("/participants", async (req, res) => {
 	const from = req.headers['user']
   
 	try {
-	  const { error } = message.validate({ to, text, type })
+	  const { error } = mensagem.validate({ to, text, type })
 	  if (error) {
 		const errorMessages = error.details.map((detail) => detail.message)
 		return res.status(422).send(errorMessages)
