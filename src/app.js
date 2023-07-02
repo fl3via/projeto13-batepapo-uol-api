@@ -53,7 +53,7 @@ app.post("/participants", async (req, res) => {
 	  const message = {
 		from: name,
 		to: 'Todos',
-		text: 'entrar na sala...',
+		text: 'entra na sala...',
 		type: 'status',
 		time: dayjs().format('HH:mm:ss')
 	  }
