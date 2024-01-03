@@ -45,3 +45,15 @@
 - express;
 - joi;
 - mongodb.
+
+## Como Executar o Projeto Localmente
+
+### No Terminal 
+1. **Clone o Repositório:** `git clone` https://github.com/fl3via/projeto13-batepapo-uol-api
+2. **Entre na pasta:** `cd` projeto13-batepapo-uol-api
+3. **Abra no Visual Estudio Code:** `code .`
+
+### No Visual Estudio Code
+4. **Instale as Dependências:** `npm install`
+5. **Inicie o Servidor:** `npm start`
+  
